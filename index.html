@@ -1,11 +1,257 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>miraive2026</title>
-</head>
-<body style="font-family: Arial, Helvetica, sans-serif;">
-  coming soon ...
-</body>
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>miraive2026 | 未来大最大規模の、公認サークルによる新入生歓迎プロジェクト</title>
+    <meta
+      name="description"
+      content="未来大最大規模の、公認サークルによる新入生歓迎プロジェクト「miraive2026」の公式サイトです。"
+    />
+    <link rel="icon" type="image/png" href="public/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Overpass:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --background: #ffffff;
+        --foreground: #171717;
+      }
+
+      body {
+        font-family: 'Noto Sans JP', Arial, sans-serif;
+        color: var(--foreground);
+        background: var(--background);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      canvas {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: -10;
+        pointer-events: none;
+      }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        z-index: 50;
+        width: 100%;
+        height: 5rem;
+        background: transparent;
+      }
+
+      .header-bg {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom right, #bae6fd, #ffffff);
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+      }
+
+      .header-bg.visible {
+        opacity: 1;
+      }
+
+      .header-inner {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .header-logo {
+        height: 100%;
+        padding: 0.75rem 0;
+        display: block;
+      }
+
+      .header-logo img {
+        height: 100%;
+        width: 10rem;
+        object-fit: contain;
+      }
+
+      /* Main */
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        min-height: 100vh;
+      }
+
+      .logo-img {
+        width: 300px;
+        max-width: 80vw;
+        object-fit: contain;
+      }
+
+      .coming-soon {
+        font-family: 'Overpass', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 400;
+      }
+
+      /* Footer */
+      footer {
+        display: flex;
+        height: 5rem;
+        width: 100%;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 0 0.5rem;
+        background: #ffffff;
+        color: #000000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="star-canvas"></canvas>
+
+    <header>
+      <div class="header-bg" id="header-bg"></div>
+      <div class="header-inner">
+        <a href="/" class="header-logo">
+          <img src="public/logo.webp" alt="miraive2026 logo" />
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <img src="public/logo.webp" alt="miraive2026" class="logo-img" />
+      <p class="coming-soon">Coming soon...</p>
+    </main>
+
+    <footer>
+      <p>© 2026 サークル運営協議会</p>
+      <p>公立はこだて未来大学</p>
+    </footer>
+
+    <script>
+      // Header scroll detection
+      const headerBg = document.getElementById('header-bg');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 0) {
+          headerBg.classList.add('visible');
+        } else {
+          headerBg.classList.remove('visible');
+        }
+      });
+
+      // Star Animation
+      const canvas = document.getElementById('star-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      const numLines = 150;
+      let lines = [];
+      const colors = [
+        '#08c5ee77',
+        '#08c5ee77',
+        '#00ede577',
+        '#74def977',
+        '#74def977',
+        '#74def977',
+        '#93ddfd77',
+        '#d6e9f877',
+        '#414fe277',
+        '#00b7f077',
+        '#00b7f077',
+        '#00f3e677',
+      ];
+      const moveAngle = (38 * Math.PI) / 180;
+
+      function initLines() {
+        lines = [];
+        for (let i = 0; i < numLines; i++) {
+          const w = Math.random() * 500 + 50;
+          const h = Math.random() * 30 + 10;
+          lines.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            width: w,
+            height: h,
+            speed: Math.random() * 2 + 1,
+            color: colors[Math.floor(Math.random() * colors.length)],
+          });
+        }
+      }
+
+      initLines();
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        lines.forEach((line) => {
+          line.x += line.speed * Math.cos(moveAngle);
+          line.y -= line.speed * Math.sin(moveAngle);
+          const shapeAngleDeg = 38;
+          const shapeAngleRad = (shapeAngleDeg * Math.PI) / 180;
+          const offset = line.height / Math.tan(shapeAngleRad);
+
+          if (line.x > width || line.y < -(line.width + line.height)) {
+            if (line.x > width) {
+              line.x = -(line.width + offset);
+              line.y = Math.random() * height;
+            } else {
+              line.x = Math.random() * width;
+              line.y = height + line.width + line.height;
+            }
+            line.color = colors[Math.floor(Math.random() * colors.length)];
+          }
+
+          const centerX = line.x + (line.width + offset) / 2;
+          const centerY = line.y + line.height / 2;
+
+          ctx.save();
+          ctx.translate(centerX, centerY);
+          ctx.rotate(-shapeAngleRad);
+          ctx.beginPath();
+          ctx.moveTo(line.x - centerX, line.y - centerY);
+          ctx.lineTo(line.x + line.width - centerX, line.y - centerY);
+          ctx.lineTo(line.x + line.width + offset - centerX, line.y + line.height - centerY);
+          ctx.lineTo(line.x + offset - centerX, line.y + line.height - centerY);
+          ctx.closePath();
+          ctx.fillStyle = line.color;
+          ctx.fill();
+          ctx.restore();
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        initLines();
+      });
+    </script>
+  </body>
 </html>

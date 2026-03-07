@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+@layer base {
+  .html_document a {
+    @apply underline;
+  }
+
+  /* スクロールダウンの位置 */
+  .scroll {
+    margin-inline: auto;
+    margin-top: 30px;
+    position: relative;
+    width: fit-content;
+  }
+  /* マウスホイール */
+  .scroll::before {
+    animation: 2s scroll infinite;
+    background: #000;
+    border-radius: 3px;
+    content: '';
+    height: 10px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    width: 4px;
+  }
+  /* マウス */
+  .scroll::after {
+    border: 2px solid #000;
+    border-radius: 20px;
+    content: '';
+    display: block;
+    height: 50px;
+    margin-inline: auto;
+    margin-top: 10px;
+    width: 30px;
+  }
+  /* アニメーション */
+  @keyframes scroll {
+    0% {
+      opacity: 0;
+      top: 40%;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      top: 70%;
+    }
+  }
+}
