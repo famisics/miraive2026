@@ -1,0 +1,42 @@
+{
+  "name": "ui-next-template",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "bun@1.3.6",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
+    "typecheck": "turbo typecheck",
+    "format": "turbo format",
+    "ci": "turbo lint:fix typecheck format",
+    "api:dev": "turbo dev --filter=@apps/api",
+    "api:build": "turbo build --filter=@apps/api",
+    "api:preview": "turbo preview --filter=@apps/api",
+    "api:deploy": "turbo deploy --filter=@apps/api",
+    "web:dev": "turbo dev --filter=@apps/web",
+    "web:build": "turbo build --filter=@apps/web",
+    "web:workers:deploy": "bun run --filter @apps/web workers:deploy",
+    "web:vercel:deploy": "bun run --filter @apps/web vercel:deploy",
+    "clean": "turbo clean && rm -rf node_modules .turbo"
+  },
+  "devDependencies": {
+    "@hono/zod-validator": "^0.7.6",
+    "@packages/config": "workspace:*",
+    "@types/node": "^22.19.15",
+    "drizzle-kit": "^0.31.9",
+    "eslint": "^9.39.4",
+    "eslint-plugin-import": "^2.32.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "turbo": "^2.8.14",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1",
+    "wrangler": "^4.71.0"
+  }
+}
